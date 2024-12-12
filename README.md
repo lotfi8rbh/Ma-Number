@@ -33,8 +33,11 @@ Avant de commencer, assurez-vous de disposer des éléments suivants :
 2. **Ajoutez les permissions nécessaires dans AndroidManifest.xml :**
 
    ```xml
-   <uses-permission android:name="android.permission.CAMERA" />
-   <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
    ```
 
    Cela garantit que l'application peut utiliser la caméra.
