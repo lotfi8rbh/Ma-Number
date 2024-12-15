@@ -101,12 +101,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraController: LifecycleCameraController
     private lateinit var predictedDigitTextView: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        predictedDigitTextView = findViewById(R.id.predictedDigit)
+        viewModel.predictedDigit.observe(this, Observer { digit ->
+            viewBinding.predictedDigit.text = digit
+        })
 
         if (!hasPermissions(baseContext)) {
             activityResultLauncher.launch(REQUIRED_PERMISSIONS)
