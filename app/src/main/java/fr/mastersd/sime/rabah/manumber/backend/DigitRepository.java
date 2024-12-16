@@ -1,4 +1,4 @@
-package fr.mastersd.sime.rabah.manumber.repository;
+package fr.mastersd.sime.rabah.manumber.backend;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -14,7 +14,7 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import fr.mastersd.sime.rabah.manumber.backend.MainViewModel
+import fr.mastersd.sime.rabah.manumber.repository.MainViewModel
 import fr.mastersd.sime.rabah.manumber.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
