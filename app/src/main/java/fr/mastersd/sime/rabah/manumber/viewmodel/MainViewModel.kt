@@ -1,4 +1,4 @@
-package fr.mastersd.sime.rabah.manumber.repository
+package fr.mastersd.sime.rabah.manumber.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
