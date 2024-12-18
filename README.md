@@ -182,6 +182,46 @@ Résolution des problèmes éventuels :
 
 ---
 
+## image processing
+Le fichier Image_Processing.kt contient une série de fonctions en Kotlin permettant de réaliser différentes opérations de traitement d'images, telles que le filtrage, la détection de contours, le redimensionnement et la binarisation. Ces opérations sont essentielles pour préparer les images récupérées par CameraX de l'application mobile. Une fois préparées, ces images sont transformées en vecteurs pour être transmises au modèle d'apprentissage automatique afin d'effectuer des prédictions.
+
+loadImage(imagePath: String): BufferedImage
+Description : Charge une image depuis le chemin spécifié.
+Utilisation :
+val image = loadImage("res/images/test0.jpeg")
+
+applyGaussianBlur(image: BufferedImage): BufferedImage
+Description : Applique un filtre gaussien pour réduire le bruit de l'image.
+Détails : Utilise une matrice de convolution 5x5 pour le lissage.
+Utilisation :
+val blurredImage = applyGaussianBlur(image)
+
+applySobelEdgeDetection(image: BufferedImage): BufferedImage
+Description : Applique le filtre Sobel pour détecter les contours horizontaux et verticaux.
+Remarque : Dans ce projet, nous n'appliquons pas le filtre Sobel car nous avons constaté que les chiffres n'étaient pas bien récupérés après cette étape de détection des contours. Le lissage par filtre gaussien suivi de la binarisation donne de meilleurs résultats pour notre cas d'usage.
+Utilisation :
+val edgeDetectedImage = applySobelEdgeDetection(image)
+
+resizeImage(image: BufferedImage, width: Int, height: Int): BufferedImage
+Description : Redimensionne l'image aux dimensions spécifiées.
+Utilisation :
+val resizedImage = resizeImage(image, 28, 28)
+
+otsuThreshold(image: BufferedImage): Int
+Description : Calcule le seuil optimal de binarisation en utilisant la méthode d'Otsu.
+Utilisation :
+val threshold = otsuThreshold(image)
+
+binarizeImage(image: BufferedImage, threshold: Int): Array<IntArray>
+Description : Binarise l'image en utilisant le seuil spécifié.
+Utilisation :
+val binarizedPixels = binarizeImage(image, threshold)
+
+flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray
+Description : Aplatie l'image binarisée en un vecteur unidimensionnel.
+Utilisation :
+val flattenedVector = flattenBinarizedImage(binarizedPixels)
+
 ## GADEU MONTHE VINETTE MARCY
 
 Après avoir programmé notre SVM en Python à l'aide de scikit-learn , nous svons récupéré les vecteurs de support, les coefficients et les biais de chaque classe soit 10 classes (de 0 à 9).
