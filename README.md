@@ -232,15 +232,15 @@ f(x) = \text{sign} \left( \sum_{i=1}^n \alpha_i y_i K(x_i, x) + b \right)
 $$
 
 Où :
--\(x) : le vecteur iamge
+- \( x \) : le vecteur image.
 - \( x_i \) : les vecteurs supports.
 - \( \alpha_i \) : les coefficients associés aux vecteurs supports.
 - \( b \) : le biais appris.
 - \( \gamma \) : le paramètre du noyau.
 -
+$$ K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
 $$
-K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
-$$
+
 
 Nous prédisions les scores d'appartenance de notre imge à chaque classe et la class 
 
