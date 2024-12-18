@@ -2,9 +2,14 @@ package fr.mastersd.sime.rabah.manumber.utils
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Matrix
 
 object ImageUtils {
 
+    /**
+     * Processus complet pour traiter une image : rotation, redimensionnement,
+     * binarisation et conversion en vecteur aplati.
+     */
     fun processImageToFlattenedVector(image: Bitmap): IntArray {
         // 1. Rotation de l'image si nécessaire
         val rotatedBitmap = rotateBitmap(image, 90f)
@@ -22,12 +27,18 @@ object ImageUtils {
         return flattenBinarizedImage(binarizedPixels)
     }
 
+    /**
+     * Effectue une rotation sur un Bitmap.
+     */
     private fun rotateBitmap(bitmap: Bitmap, degrees: Float): Bitmap {
-        val matrix = android.graphics.Matrix()
+        val matrix = Matrix()
         matrix.postRotate(degrees)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
+    /**
+     * Convertit un tableau binaire en Bitmap.
+     */
     fun binaryToBitmap(binarizedPixels: IntArray, width: Int, height: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         for (y in 0 until height) {
@@ -40,7 +51,9 @@ object ImageUtils {
         return bitmap
     }
 
-
+    /**
+     * Calcule le seuil optimal d'Otsu pour une image en niveaux de gris.
+     */
     private fun calculateOtsuThreshold(image: Bitmap): Int {
         val histogram = IntArray(256)
 
@@ -82,6 +95,9 @@ object ImageUtils {
         return threshold
     }
 
+    /**
+     * Binarise une image en niveaux de gris selon un seuil donné.
+     */
     private fun binarizeImage(image: Bitmap, threshold: Int): Array<IntArray> {
         val binarized = Array(image.height) { IntArray(image.width) }
         for (y in 0 until image.height) {
@@ -93,9 +109,10 @@ object ImageUtils {
         return binarized
     }
 
+    /**
+     * Aplatit une image binaire 2D en un vecteur 1D.
+     */
     private fun flattenBinarizedImage(binarized: Array<IntArray>): IntArray {
         return binarized.flatMap { it.toList() }.toIntArray()
     }
-
-
 }
