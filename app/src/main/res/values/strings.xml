@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Ma Number</string>
     <string name="image_binarisé">l\'image binaire</string>
-    <string name="capturer">Capture</string>
+    <string name="capture">Capture</string>
 </resources>
