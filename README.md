@@ -182,6 +182,31 @@ Résolution des problèmes éventuels :
 
 ---
 
+## Support Vector Machine avec noyau gaussien (RBF Kernel)
+
+La fonction de décision d’un SVM utilisant un noyau gaussien est définie comme :
+
+$$
+f(x) = \text{sign} \left( \sum_{i=1}^n \alpha_i y_i K(x_i, x) + b \right)
+$$
+
+Où le noyau gaussien \( K(x_i, x) \) est donné par :
+
+$$
+K(x_i, x) = \exp \left( -\frac{\|x_i - x\|^2}{2\sigma^2} \right)
+$$
+
+### Explications :
+- \( \alpha_i \) : Coefficients appris pour chaque vecteur de support.
+- \( y_i \) : Label (classe) associé à chaque point d’entraînement.
+- \( x_i \) : Point d’entraînement.
+- \( x \) : Point d’entrée pour lequel on évalue \( f(x) \).
+- \( b \) : Biais appris.
+- \( \sigma \) : Paramètre du noyau (contrôle l’étendue de l’influence des points).
+
+La fonction \( \text{sign} \) détermine la classe (positif ou négatif).
+
+
 ## Références
 
 - Documentation officielle de CameraX
