@@ -1,4 +1,4 @@
-package fr.mastersd.sime.rabah.manumber
+package fr.mastersd.sime.rabah.manumber.backend
 
 import org.json.JSONObject
 import java.nio.charset.Charset
