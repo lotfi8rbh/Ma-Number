@@ -193,9 +193,10 @@ $$
 
 Où :
 -
+$$
 
-K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
-
+x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
+$$
 - \( x_i \) : les vecteurs supports.
 - \( \alpha_i \) : les coefficients associés aux vecteurs supports.
 - \( b \) : le biais appris.
