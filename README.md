@@ -182,6 +182,111 @@ Résolution des problèmes éventuels :
 
 ---
 
+## image processing
+Le fichier Image_Processing.kt contient une série de fonctions en Kotlin permettant de réaliser différentes opérations de traitement d'images, telles que le filtrage, la détection de contours, le redimensionnement et la binarisation. Ces opérations sont essentielles pour préparer les images récupérées par CameraX de l'application mobile. Une fois préparées, ces images sont transformées en vecteurs pour être transmises au modèle d'apprentissage automatique afin d'effectuer des prédictions.
+
+loadImage(imagePath: String): BufferedImage
+Description : Charge une image depuis le chemin spécifié.
+Utilisation :
+val image = loadImage("res/images/test0.jpeg")
+
+applyGaussianBlur(image: BufferedImage): BufferedImage
+Description : Applique un filtre gaussien pour réduire le bruit de l'image.
+Détails : Utilise une matrice de convolution 5x5 pour le lissage.
+Utilisation :
+val blurredImage = applyGaussianBlur(image)
+
+applySobelEdgeDetection(image: BufferedImage): BufferedImage
+Description : Applique le filtre Sobel pour détecter les contours horizontaux et verticaux.
+Remarque : Dans ce projet, nous n'appliquons pas le filtre Sobel car nous avons constaté que les chiffres n'étaient pas bien récupérés après cette étape de détection des contours. Le lissage par filtre gaussien suivi de la binarisation donne de meilleurs résultats pour notre cas d'usage.
+Utilisation :
+val edgeDetectedImage = applySobelEdgeDetection(image)
+
+resizeImage(image: BufferedImage, width: Int, height: Int): BufferedImage
+Description : Redimensionne l'image aux dimensions spécifiées.
+Utilisation :
+val resizedImage = resizeImage(image, 28, 28)
+
+otsuThreshold(image: BufferedImage): Int
+Description : Calcule le seuil optimal de binarisation en utilisant la méthode d'Otsu.
+Utilisation :
+val threshold = otsuThreshold(image)
+
+binarizeImage(image: BufferedImage, threshold: Int): Array<IntArray>
+Description : Binarise l'image en utilisant le seuil spécifié.
+Utilisation :
+val binarizedPixels = binarizeImage(image, threshold)
+
+flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray
+Description : Aplatie l'image binarisée en un vecteur unidimensionnel.
+Utilisation :
+val flattenedVector = flattenBinarizedImage(binarizedPixels)
+
+
+
+## GADEU MONTHE VINETTE MARCY
+# Implémentation du SVM avec le noyau RBF en Java
+Après avoir programmé notre SVM en Python à l'aide de scikit-learn , nous avons récupéré les vecteurs de support, les coefficients et les biais de chaque classe soit 10 classes (de 0 à 9).
+
+Nous avons implémenté la fonction de décision SVM suivante :
+$$
+f(x) = \text{sign} \left( \sum_{i=1}^n \alpha_i y_i K(x_i, x) + b \right)
+$$
+
+Où :
+- \( x \) : le vecteur image.
+- \( x_i \) : les vecteurs supports.
+- \( \alpha_i \) : les coefficients associés aux vecteurs supports.
+- \( b \) : le biais appris.
+- \( \gamma \) : le paramètre du noyau.
+
+Le noyau utilisé dans cet algorithme est le noyau gaussien (RBF), défini par :
+$$ K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
+$$
+
+
+Nous prédisons les scores d'appartenance de notre iamge à chaque classe et la classe avec le score maximale est la classe prédite. 
+
+Pour ce faire, nous avons organisé notre code comme suite:
+
+### 1. **Classe `ModeleSVM`**
+
+cette classe représente le modèle SVM avec un noyau RBF. 
+
+#### Attributs principaux :
+- **`vecteursSupport`** : Matrice contenant les vecteurs de support de la classe.
+- **`coefficients`** : Coefficients \( \alpha_i \) associés aux vecteurs de support.
+- **`biais`** : Le biais \( b \).
+- **`gamma`** : Paramètre du noyau RBF (défini à 0.001 par défaut).
+
+#### Méthodes principales :
+1. **`ModeleSVM(String fichierSupportVecteurs, String fichierCoefficients, String fichierBiais)`**
+   - Constructeur qui initialise le modèle en chargeant les paramètres depuis les fichiers en spécifiant le chemin des fichiers.
+2. **`chargerVecteursSupports(String fichierSupportVecteurs)`**
+   - Charge les vecteurs supports depuis un fichier.
+3. **`chargerCoefficients(String fichierCoefficients)`**
+   - Charge les coefficients \( \alpha \) depuis un fichier.
+4. **`chargerBiais(String fichierBiais)`**
+   - Charge le biais \( b \) depuis un fichier.
+5. **`noyau_rbf(double[] vecteur_image, double[] vecteurs_support)`**
+   - Calcule la valeur du noyau RBF entre un vecteur d'entrée et un vecteur support.
+6. **`predict_score(double[] vecteur_image)`**
+   - Calcule le score pour une classe donnée en fonction du vecteur image.
+
+### 2. **Classe `ListModeleSVM`**
+Elle contient la liste des 10 modèles SVM des 10 classes.
+
+#### Attributs principaux :
+- **`listesDeModeleSVM`** : Une liste contenant 10 instances de `ModeleSVM`.
+
+#### Méthodes principales :
+1. **`ListModeleSVM()`**
+   - Constructeur qui initialise la liste en chargeant les paramètres de chaque modèle depuis les fichiers correspondants.
+2. **`predict_chiffre(double[] vecteur_image)`**
+   - Prédit la classe d'un vecteur d'entrée en calculant les scores pour les 10 classes et retourne la classe avec le score maximal.
+
+---
+
 ## Références
 
 - Documentation officielle de CameraX
