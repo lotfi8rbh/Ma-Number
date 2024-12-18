@@ -192,7 +192,7 @@ f(x) = \text{sign} \left( \sum_{i=1}^n \alpha_i y_i K(x_i, x) + b \right)
 $$
 
 Où :
-- \( x_i \) : les vecteurs supports.
+- $$\( x_i \) $$: les vecteurs supports.
 - \( \alpha_i \) : les coefficients associés aux vecteurs supports.
 - \( b \) : le biais appris.
 - \( \gamma \) : le paramètre du noyau.
