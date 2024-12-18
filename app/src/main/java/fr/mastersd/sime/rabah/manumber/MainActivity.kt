@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
         return binarizedPixels.flatMap { it.toList() }.toIntArray()
     }
 
-    override fun onDestroy() {
+    override fun onDestroy() {*
         super.onDestroy()
         cameraExecutor.shutdown()
     }
