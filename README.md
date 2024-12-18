@@ -192,10 +192,9 @@ f(x) = \text{sign} \left( \sum_{i=1}^n \alpha_i y_i K(x_i, x) + b \right)
 $$
 
 Où :
-
--$$
-\[ x_{1,2} = \frac{- b \pm \sqrt{\Delta}}{2a} \]
-
+-
+$$
+K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
 $$
 - \( x_i \) : les vecteurs supports.
 - \( \alpha_i \) : les coefficients associés aux vecteurs supports.
