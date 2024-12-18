@@ -182,30 +182,24 @@ Résolution des problèmes éventuels :
 
 ---
 
-## Support Vector Machine avec noyau gaussien (RBF Kernel)
+## GADEU MONTHE VINETTE MARCY
 
-La fonction de décision d’un SVM utilisant un noyau gaussien est définie comme :
+Après avoir programmé notre SVM en Python à l'aide de scikit-learn , nous svons récupéré les vecteurs de support, les coefficients et les biais de chaque classe soit 10 classes (de 0 à 9).
 
+Nous avons implémenté la fonction de décision SVM suivante :
 $$
 f(x) = \text{sign} \left( \sum_{i=1}^n \alpha_i y_i K(x_i, x) + b \right)
 $$
 
-Où le noyau gaussien \( K(x_i, x) \) est donné par :
+Où :
+- \( x_i \) : les vecteurs supports.
+- \( \alpha_i \) : les coefficients associés aux vecteurs supports.
+- \( b \) : le biais appris.
+- \( \gamma \) : le paramètre du noyau.
 
 $$
-K(x_i, x) = \exp \left( -\frac{\|x_i - x\|^2}{2\sigma^2} \right)
+K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
 $$
-
-### Explications :
-- \( \alpha_i \) : Coefficients appris pour chaque vecteur de support.
-- \( y_i \) : Label (classe) associé à chaque point d’entraînement.
-- \( x_i \) : Point d’entraînement.
-- \( x \) : Point d’entrée pour lequel on évalue \( f(x) \).
-- \( b \) : Biais appris.
-- \( \sigma \) : Paramètre du noyau (contrôle l’étendue de l’influence des points).
-
-La fonction \( \text{sign} \) détermine la classe (positif ou négatif).
-
 
 ## Références
 
