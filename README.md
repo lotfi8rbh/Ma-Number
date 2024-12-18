@@ -222,9 +222,11 @@ Description : Aplatie l'image binarisée en un vecteur unidimensionnel.
 Utilisation :
 val flattenedVector = flattenBinarizedImage(binarizedPixels)
 
-## GADEU MONTHE VINETTE MARCY
 
-Après avoir programmé notre SVM en Python à l'aide de scikit-learn , nous svons récupéré les vecteurs de support, les coefficients et les biais de chaque classe soit 10 classes (de 0 à 9).
+
+## GADEU MONTHE VINETTE MARCY
+# Implémentation du SVM avec le noyau RBF en Java
+Après avoir programmé notre SVM en Python à l'aide de scikit-learn , nous avons récupéré les vecteurs de support, les coefficients et les biais de chaque classe soit 10 classes (de 0 à 9).
 
 Nous avons implémenté la fonction de décision SVM suivante :
 $$
@@ -237,12 +239,53 @@ Où :
 - \( \alpha_i \) : les coefficients associés aux vecteurs supports.
 - \( b \) : le biais appris.
 - \( \gamma \) : le paramètre du noyau.
--
+
+Le noyau utilisé dans cet algorithme est le noyau gaussien (RBF), défini par :
 $$ K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
 $$
 
 
-Nous prédisions les scores d'appartenance de notre imge à chaque classe et la class 
+Nous prédisons les scores d'appartenance de notre iamge à chaque classe et la classe avec le score maximale est la classe prédite. 
+
+Pour ce faire, nous avons organisé notre code comme suite:
+
+### 1. **Classe `ModeleSVM`**
+
+cette classe représente le modèle SVM avec un noyau RBF. 
+
+#### Attributs principaux :
+- **`vecteursSupport`** : Matrice contenant les vecteurs de support de la classe.
+- **`coefficients`** : Coefficients \( \alpha_i \) associés aux vecteurs de support.
+- **`biais`** : Le biais \( b \).
+- **`gamma`** : Paramètre du noyau RBF (défini à 0.001 par défaut).
+
+#### Méthodes principales :
+1. **`ModeleSVM(String fichierSupportVecteurs, String fichierCoefficients, String fichierBiais)`**
+   - Constructeur qui initialise le modèle en chargeant les paramètres depuis les fichiers en spécifiant le chemin des fichiers.
+2. **`chargerVecteursSupports(String fichierSupportVecteurs)`**
+   - Charge les vecteurs supports depuis un fichier.
+3. **`chargerCoefficients(String fichierCoefficients)`**
+   - Charge les coefficients \( \alpha \) depuis un fichier.
+4. **`chargerBiais(String fichierBiais)`**
+   - Charge le biais \( b \) depuis un fichier.
+5. **`noyau_rbf(double[] vecteur_image, double[] vecteurs_support)`**
+   - Calcule la valeur du noyau RBF entre un vecteur d'entrée et un vecteur support.
+6. **`predict_score(double[] vecteur_image)`**
+   - Calcule le score pour une classe donnée en fonction du vecteur image.
+
+### 2. **Classe `ListModeleSVM`**
+Elle contient la liste des 10 modèles SVM des 10 classes.
+
+#### Attributs principaux :
+- **`listesDeModeleSVM`** : Une liste contenant 10 instances de `ModeleSVM`.
+
+#### Méthodes principales :
+1. **`ListModeleSVM()`**
+   - Constructeur qui initialise la liste en chargeant les paramètres de chaque modèle depuis les fichiers correspondants.
+2. **`predict_chiffre(double[] vecteur_image)`**
+   - Prédit la classe d'un vecteur d'entrée en calculant les scores pour les 10 classes et retourne la classe avec le score maximal.
+
+---
 
 ## Références
 
