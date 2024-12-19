@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import java.io.File
 import java.util.concurrent.ExecutorService
 
@@ -23,7 +23,7 @@ class CameraManager(
     /**
      * Vérifie les permissions nécessaires et les demande si elles ne sont pas accordées.
      */
-    fun checkPermissions(activity: AppCompatActivity): Boolean {
+    fun checkPermissions(activity: FragmentActivity): Boolean {
         val cameraPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
         val storagePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 

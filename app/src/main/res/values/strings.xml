@@ -2,4 +2,7 @@
     <string name="app_name">Ma Number</string>
     <string name="image_binarisé">l\'image binaire</string>
     <string name="capture">Capture</string>
+    <string name="Prediction">Prediction</string>
+    <string name="logo_description">Appareil noir avec BG vert</string>
+    <string name="demarrer">Démarrer</string>
 </resources>

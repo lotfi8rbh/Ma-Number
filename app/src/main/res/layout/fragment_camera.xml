@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#FFFFFF">
+
+    <!-- Image binarisée en haut -->
+    <ImageView
+        android:id="@+id/binaryImageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:background="#CCCCCC"
+        android:contentDescription="@string/image_binarisé" />
+
+    <!-- Flux de la caméra -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraPreviewView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:background="#EEEEEE" />
+
+    <!-- Bouton "Capture" -->
+    <Button
+        android:id="@+id/captureButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/capture"
+        android:layout_marginTop="16dp" />
+
+    <!-- Texte pour la prédiction -->
+    <TextView
+        android:id="@+id/predictionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Prediction"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:textColor="#000000" />
+</LinearLayout>
