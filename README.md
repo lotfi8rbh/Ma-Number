@@ -287,26 +287,33 @@ Elle contient la liste des 10 modèles SVM des 10 classes.
 
 ---
 ## Harouna NIANG
+La partie interface utilisateur a pour but de fournir un environnement intuitif et interactf pour : 
+    - Afficher le flux vidéo de la caméra en direct
+    - Visualiser les prédictions du chiffre manuscrit détecté
+    - Monter les étapes de traitement de l'image en temps réel
 # Mise en oeuvre de l'interface Utilisateur
-Pour le choix de notre interface utilisateur, nous avons opté une configuration avec une page d'acceuil qui vous rediriger vers la page où l'on effectue la prédiction à travers la vidéo. Pour cela, nous avons implémenter deux fragments que nous avons utiliser pour la navigation. Et cela implique des classes pour gérer les fragments.
+Pour le choix de notre interface utilisateur, nous avons opté une configuration avec une page d'acceuil qui nous redirige vers la page où l'on effectue la prédiction à travers la caméra. Pour cela, nous avons implémenter deux fragments que nous avons utiliser pour la navigation. Et cela implique des classes pour gérer les fragments.
 
-### Navigation
+## Navigation
 #### Au niveau du Layout
-1. **`fragment_welcome.xml`**
+1. **`app/src/main/res/layout/fragment_welcome.xml`** 
     Dans ce fragment permet de configurer la page d'acceuil de notre application dans laquelle nous avons un logo, un message de bienvenue et un bouton Start qui permet à l'utilisateur de lancer la reconnaissance d'un chiffre manuscrit.
-2. **`fragment_camera.xml`**
+2. **`app/src/main/res/layout/fragment_camera.xml`**
     Dans cette partie, nous avons installer la cameraX ainsi que textView qui permet d'afficher la valeur prédite par notre modèle SVM. 
 #### Au niveau de l'actvité
-1. **Classe `Welcomefragment`** : 
-    Dans cette classe,
+1. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Welcomefragment.kt`** : 
+    Dans cette classe, nous avons traité la navigation vers le fragment de la camera lors de l'appui sur le bouton Start.
+2. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Camerafragment.kt`** :
+    Cette classe permet de charger le fichier fragment_camera.xml via viewBinding. Elle contient également la logique pour mettre à jour les prédictions grâce à la fonction updateUI.
+#### Au niveau de la navigation 
+    On a crée un fichier nav_graph.xml `app/src/main/res/navigation/nav_graph.xml` permettant de gérer la navigation entre nos deux fragments. C'est dans ce dit fichier qu'on explicite l'action de chagement de fragment en l'occurrence de fragmentwelcome à camerafragment.
+## Résultat attendu 
+L'interface finale comprend :
+    - Une zone principale affichant le flux vidéo
+    - Une zone encadrée pour les prédictions
+    - Une zone encadrée pour afficher les étapes de traitement
 
-2. **Classe `Camerafragment`** :
-    Cette classe permet de charger le fichier fragment_camera.xml via viewBinding. Elle contient également la logique pour mettre à jour les prédictions grâce à la fonction updateUI. 
-### Au niveau de navigation 
-    On a crée un fichier nav_graph.xml permettant de gérer la navigation entre nos deux fragments. C'est dans ce dit fichier qu'on explicite l'action de chagement de fragment en l'occurrence de fragmentwelcome à camerafragment.  
-
-
-
+Cette structure offre une interface claire, simple et professionnelle pour l'utilisateur.
 ---
 
 Après avoir écrit le modèle en Java, nous l'avons traduit en Kotlin pour pouvoir l'intégrer facilement dans l'application.
