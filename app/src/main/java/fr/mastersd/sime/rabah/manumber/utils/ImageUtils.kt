@@ -103,7 +103,7 @@ object ImageUtils {
         for (y in 0 until image.height) {
             for (x in 0 until image.width) {
                 val gray = Color.red(image.getPixel(x, y))
-                binarized[y][x] = if (gray > threshold) 1 else 0
+                binarized[y][x] = if (gray < threshold) 1 else 0
             }
         }
         return binarized
