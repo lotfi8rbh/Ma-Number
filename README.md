@@ -229,8 +229,8 @@ val threshold = otsuThreshold(image)
 val binarizedPixels = binarizeImage(image, threshold)
 ```
 
-`flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray`
-**Description** Aplatie l'image binarisée en un vecteur unidimensionnel.
+`flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray`   
+**Description** Aplatie l'image binarisée en un vecteur unidimensionnel.  
 **Utilisation**
 ```kotlin
 val flattenedVector = flattenBinarizedImage(binarizedPixels)
@@ -239,16 +239,16 @@ val flattenedVector = flattenBinarizedImage(binarizedPixels)
 
 Le fichier `Centralisation.kt` est une version améliorée de `Image_Processing.kt`. Dans cette version, nous avons abandonné l'utilisation du filtre gaussien. À la place, l'accent est mis sur la détection du chiffre présent dans l'image. Une fois le chiffre détecté, l'image est rognée pour ne conserver que la zone pertinente, puis elle est transformée en vecteur afin d'être préparée pour le modèle d'apprentissage automatique.
 
-`cropImage(pixels: Array<IntArray>): Array<IntArray>`
-**Description**  Cette fonction rogne l'image binarisée en éliminant les lignes et colonnes contenant uniquement des 0 (celles qui sont vides). Elle ajoute également une bordure de 64 pixels (de 0) tout autour de l'image, permettant ainsi de se concentrer uniquement sur la zone contenant le chiffre à traiter, en éliminant les parties non pertinentes.
-**Utilisation**
+`cropImage(pixels: Array<IntArray>): Array<IntArray>`    
+**Description**  Cette fonction rogne l'image binarisée en éliminant les lignes et colonnes contenant uniquement des 0 (celles qui sont vides). Elle ajoute également une bordure de 64 pixels (de 0) tout autour de l'image, permettant ainsi de se concentrer uniquement sur la zone contenant le chiffre à traiter, en éliminant les parties non pertinentes.   
+**Utilisation**  
 '''kotlin
 val croppedPixels = cropImage(binarizedPixels)
 '''
 
-`resizeAndFlattenImage(image: BufferedImage, width: Int, height: Int): List<Int>`
-**Description** Redimensionne l'image aux dimensions spécifiées et la transforme en un vecteur unidimensionnel.
-**Utilisation**
+`resizeAndFlattenImage(image: BufferedImage, width: Int, height: Int): List<Int>`  
+**Description** Redimensionne l'image aux dimensions spécifiées et la transforme en un vecteur unidimensionnel.  
+**Utilisation**  
 '''kotlin
 val resizedVector = resizeAndFlattenImage(image, 28, 28)
 '''
