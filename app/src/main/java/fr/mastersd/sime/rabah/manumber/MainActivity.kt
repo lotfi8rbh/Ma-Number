@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import backend.svm.ListModeleSVM
 import fr.mastersd.sime.rabah.manumber.databinding.ActivityMainBinding
 import fr.mastersd.sime.rabah.manumber.utils.CameraManager
 import fr.mastersd.sime.rabah.manumber.utils.ImageUtils
@@ -21,11 +22,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var cameraManager: CameraManager
+    private lateinit var svmListModel: ListModeleSVM
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Charger les modèles SVM
+        svmListModel = ListModeleSVM(this)
+
 
         // Initialiser CameraManager
         cameraManager = CameraManager(
@@ -71,25 +78,41 @@ class MainActivity : AppCompatActivity() {
 
     private fun processCapturedImage(file: File) {
         if (file.exists()) {
-            Log.d("MainActivity", "Image capturée : ${file.absolutePath}")
+            Log.d("MainActivity", "Fichier image trouvé : ${file.absolutePath}")
+            Toast.makeText(this, "Chargement de l'image...", Toast.LENGTH_SHORT).show()
 
             // Charger l'image capturée
             val bitmap = BitmapFactory.decodeFile(file.absolutePath)
 
-            // Traiter l'image en binaire
+            // Étape 1 : Appliquer la binarisation
             val binarizedPixels = ImageUtils.processImageToFlattenedVector(bitmap)
-
-            // Convertir les pixels binaires en un Bitmap
             val binarizedBitmap = ImageUtils.binaryToBitmap(binarizedPixels, 28, 28)
+            Log.d("TraitementImage", "Image binarisée et convertie en vecteur aplati.")
+            Toast.makeText(this, "Image binarisée.", Toast.LENGTH_SHORT).show()
 
-            // Afficher l'image binarisée dans l'ImageView
+            // Afficher l'image binarisée
             runOnUiThread {
                 binding.binaryImageView.setImageBitmap(binarizedBitmap)
             }
+
+            // Étape 2 : Prédiction du chiffre
+            val flattenedVector = binarizedPixels.map { it.toDouble() }.toDoubleArray()
+            Toast.makeText(this, "Prédiction en cours...", Toast.LENGTH_SHORT).show()
+            val predictedDigit = svmListModel.predictChiffre(flattenedVector)
+
+            Log.d("Prédiction", "Classe prédite : $predictedDigit")
+            Toast.makeText(this, "Classe prédite : $predictedDigit", Toast.LENGTH_LONG).show()
+
+            // Afficher la prédiction
+            runOnUiThread {
+                binding.textPrediction.text = "Prédiction : $predictedDigit"
+            }
         } else {
-            Log.e("MainActivity", "Le fichier capturé n'existe pas.")
+            Log.e("MainActivity", "Le fichier image n'existe pas.")
+            Toast.makeText(this, "Erreur : Fichier introuvable.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 
 
