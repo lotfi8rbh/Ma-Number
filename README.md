@@ -265,7 +265,7 @@ cette classe représente le modèle SVM avec un noyau RBF.
 2. **`chargerVecteursSupports(String fichierSupportVecteurs)`**
    - Charge les vecteurs supports depuis un fichier.
 3. **`chargerCoefficients(String fichierCoefficients)`**
-   - Charge les coefficients \( \alpha \) depuis un fichier.
+   - Charge les coefficients \( \alpha_i \) depuis un fichier.
 4. **`chargerBiais(String fichierBiais)`**
    - Charge le biais \( b \) depuis un fichier.
 5. **`noyau_rbf(double[] vecteur_image, double[] vecteurs_support)`**
@@ -286,6 +286,8 @@ Elle contient la liste des 10 modèles SVM des 10 classes.
    - Prédit la classe d'un vecteur d'entrée en calculant les scores pour les 10 classes et retourne la classe avec le score maximal.
 
 ---
+
+Après avoir écrit le modèle en Java, nous l'avons traduit en Kotlin pour pouvoir l'intégrer facilement dans l'application.
 
 ## Références
 
