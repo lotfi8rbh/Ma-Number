@@ -286,6 +286,28 @@ Elle contient la liste des 10 modèles SVM des 10 classes.
    - Prédit la classe d'un vecteur d'entrée en calculant les scores pour les 10 classes et retourne la classe avec le score maximal.
 
 ---
+## Harouna NIANG
+# Mise en oeuvre de l'interface Utilisateur
+Pour le choix de notre interface utilisateur, nous avons opté une configuration avec une page d'acceuil qui vous rediriger vers la page où l'on effectue la prédiction à travers la vidéo. Pour cela, nous avons implémenter deux fragments que nous avons utiliser pour la navigation. Et cela implique des classes pour gérer les fragments.
+
+### Navigation
+#### Au niveau du Layout
+1. **`fragment_welcome.xml`**
+    Dans ce fragment permet de configurer la page d'acceuil de notre application dans laquelle nous avons un logo, un message de bienvenue et un bouton Start qui permet à l'utilisateur de lancer la reconnaissance d'un chiffre manuscrit.
+2. **`fragment_camera.xml`**
+    Dans cette partie, nous avons installer la cameraX ainsi que textView qui permet d'afficher la valeur prédite par notre modèle SVM. 
+#### Au niveau de l'actvité
+1. **Classe `Welcomefragment`** : 
+    Dans cette classe,
+
+2. **Classe `Camerafragment`** :
+    Cette classe permet de charger le fichier fragment_camera.xml via viewBinding. Elle contient également la logique pour mettre à jour les prédictions grâce à la fonction updateUI. 
+### Au niveau de navigation 
+    On a crée un fichier nav_graph.xml permettant de gérer la navigation entre nos deux fragments. C'est dans ce dit fichier qu'on explicite l'action de chagement de fragment en l'occurrence de fragmentwelcome à camerafragment.  
+
+
+
+---
 
 Après avoir écrit le modèle en Java, nous l'avons traduit en Kotlin pour pouvoir l'intégrer facilement dans l'application.
 
