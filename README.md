@@ -242,16 +242,16 @@ Le fichier `Centralisation.kt` est une version améliorée de `Image_Processing.
 `cropImage(pixels: Array<IntArray>): Array<IntArray>`    
 **Description**  Cette fonction rogne l'image binarisée en éliminant les lignes et colonnes contenant uniquement des 0 (celles qui sont vides). Elle ajoute également une bordure de 64 pixels (de 0) tout autour de l'image, permettant ainsi de se concentrer uniquement sur la zone contenant le chiffre à traiter, en éliminant les parties non pertinentes.   
 **Utilisation**  
-'''kotlin
+```kotlin
 val croppedPixels = cropImage(binarizedPixels)
-'''
+```
 
 `resizeAndFlattenImage(image: BufferedImage, width: Int, height: Int): List<Int>`  
 **Description** Redimensionne l'image aux dimensions spécifiées et la transforme en un vecteur unidimensionnel.  
 **Utilisation**  
-'''kotlin
+```kotlin
 val resizedVector = resizeAndFlattenImage(image, 28, 28)
-'''
+```
 
 ## GADEU MONTHE VINETTE MARCY
 # Implémentation du SVM avec le noyau RBF en Java
