@@ -183,75 +183,73 @@ Résolution des problèmes éventuels :
 ---
 
 ## image processing
-Le fichier 'Image_Processing.kt' contient une série de fonctions en Kotlin permettant de réaliser différentes opérations de traitement d'images, telles que le filtrage, la détection de contours, le redimensionnement et la binarisation. Ces opérations sont essentielles pour préparer les images récupérées par CameraX de l'application mobile. Une fois préparées, ces images sont transformées en vecteurs pour être transmises au modèle d'apprentissage automatique afin d'effectuer des prédictions.
+Le fichier `Image_Processing.kt` contient une série de fonctions en Kotlin permettant de réaliser différentes opérations de traitement d'images, telles que le filtrage, la détection de contours, le redimensionnement et la binarisation. Ces opérations sont essentielles pour préparer les images récupérées par CameraX de l'application mobile. Une fois préparées, ces images sont transformées en vecteurs pour être transmises au modèle d'apprentissage automatique afin d'effectuer des prédictions.
 
-'loadImage(imagePath: String): BufferedImage'
-**Description **Charge une image depuis le chemin spécifié.
-**Utilisation **
-'''kotlin
+`loadImage(imagePath: String): BufferedImage`
+**Description** Charge une image depuis le chemin spécifié.
+**Utilisation**
+```kotlin
 val image = loadImage("res/images/test0.jpeg")
-'''
+```
 
-'applyGaussianBlur(image: BufferedImage): BufferedImage'
-**Description ** Applique un filtre gaussien pour réduire le bruit de l'image.
-**Détails **Utilise une matrice de convolution 5x5 pour le lissage.
-**Utilisation **
-'''kotlin
+`applyGaussianBlur(image: BufferedImage): BufferedImage`
+**Description** Applique un filtre gaussien pour réduire le bruit de l'image.
+**Détails** Utilise une matrice de convolution 5x5 pour le lissage.
+**Utilisation**
+```kotlin
 val blurredImage = applyGaussianBlur(image)
-'''
+```
 
-'applySobelEdgeDetection(image: BufferedImage): BufferedImage'
-**Description **Applique le filtre Sobel pour détecter les contours horizontaux et verticaux.
-**Remarque **Dans ce projet, nous n'appliquons pas le filtre Sobel car nous avons constaté que les chiffres n'étaient pas bien récupérés après cette étape de détection des contours. Le lissage par filtre gaussien suivi de la binarisation donne de meilleurs résultats pour notre cas d'usage.
-**Utilisation **
-'''kotlin
+`applySobelEdgeDetection(image: BufferedImage): BufferedImage`
+**Description** Applique le filtre Sobel pour détecter les contours horizontaux et verticaux.
+**Remarque** Dans ce projet, nous n'appliquons pas le filtre Sobel car nous avons constaté que les chiffres n'étaient pas bien récupérés après cette étape de détection des contours. Le lissage par filtre gaussien suivi de la binarisation donne de meilleurs résultats pour notre cas d'usage.
+**Utilisation**
+```kotlin
 val edgeDetectedImage = applySobelEdgeDetection(image)
-'''
+```
 
-'resizeImage(image: BufferedImage, width: Int, height: Int): BufferedImage'
-**Description **Redimensionne l'image aux dimensions spécifiées.
-**Utilisation **
-'''kotlin
+`resizeImage(image: BufferedImage, width: Int, height: Int): BufferedImage`
+**Description** Redimensionne l'image aux dimensions spécifiées.
+**Utilisation**
+```kotlin
 val resizedImage = resizeImage(image, 28, 28)
-'''
+```
 
-'otsuThreshold(image: BufferedImage): Int'
-**Description **Calcule le seuil optimal de binarisation en utilisant la méthode d'Otsu.
-**Utilisation **
-'''kotlin
+`otsuThreshold(image: BufferedImage): Int`
+**Description**Calcule le seuil optimal de binarisation en utilisant la méthode d'Otsu.
+**Utilisation**
+```kotlin
 val threshold = otsuThreshold(image)
-'''
+```
 
-'binarizeImage(image: BufferedImage, threshold: Int): Array<IntArray>'
-**Description **Binarise l'image en utilisant le seuil spécifié.
-**Utilisation **
-'''kotlin
+`binarizeImage(image: BufferedImage, threshold: Int): Array<IntArray>`
+**Description** Binarise l'image en utilisant le seuil spécifié.
+**Utilisation**
+```kotlin
 val binarizedPixels = binarizeImage(image, threshold)
-'''
+```
 
-'flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray'
-**Description **Aplatie l'image binarisée en un vecteur unidimensionnel.
-**Utilisation **
-'''kotlin
+`flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray`
+**Description** Aplatie l'image binarisée en un vecteur unidimensionnel.
+**Utilisation**
+```kotlin
 val flattenedVector = flattenBinarizedImage(binarizedPixels)
-'''
+```
 
 
-Le fichier 'Centralisation.kt' est une version améliorée de 'ImageProcessing.kt'. Dans cette version, nous avons abandonné l'utilisation du filtre gaussien. À la place, l'accent est mis sur la détection du chiffre présent dans l'image. Une fois le chiffre détecté, l'image est rognée pour ne conserver que la zone pertinente, puis elle est transformée en vecteur afin d'être préparée pour le modèle d'apprentissage automatique.
+Le fichier `Centralisation.kt` est une version améliorée de `Image_Processing.kt`. Dans cette version, nous avons abandonné l'utilisation du filtre gaussien. À la place, l'accent est mis sur la détection du chiffre présent dans l'image. Une fois le chiffre détecté, l'image est rognée pour ne conserver que la zone pertinente, puis elle est transformée en vecteur afin d'être préparée pour le modèle d'apprentissage automatique.
 
-'cropImage(pixels: Array<IntArray>): Array<IntArray>'
+`cropImage(pixels: Array<IntArray>): Array<IntArray>`
 **Description**  Cette fonction rogne l'image binarisée en éliminant les lignes et colonnes contenant uniquement des 0 (celles qui sont vides). Elle ajoute également une bordure de 64 pixels (de 0) tout autour de l'image, permettant ainsi de se concentrer uniquement sur la zone contenant le chiffre à traiter, en éliminant les parties non pertinentes.
 **Utilisation**
 '''kotlin
-Copier le code
 val croppedPixels = cropImage(binarizedPixels)
 '''
 
-'resizeAndFlattenImage(image: BufferedImage, width: Int, height: Int): List<Int>'
+`resizeAndFlattenImage(image: BufferedImage, width: Int, height: Int): List<Int>`
 **Description** Redimensionne l'image aux dimensions spécifiées et la transforme en un vecteur unidimensionnel.
 **Utilisation**
 '''kotlin
-Copier le code
 val resizedVector = resizeAndFlattenImage(image, 28, 28)
 '''
 
