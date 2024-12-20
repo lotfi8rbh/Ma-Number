@@ -181,7 +181,41 @@ Résolution des problèmes éventuels :
   Traitez les images capturées en temps réel et affichez les résultats.
 
 ---
+# Interface Utilisateur
+L'interface utilisateur a pour objectif de fournir un environnement intuitif et interactif permettant de :  
+- Afficher le flux vidéo de la caméra en direct
+- Visualiser les prédictions du chiffre manuscrit détecté
+- Monter les étapes de traitement de l'image en temps réel
 
+L'interface est structurée autour d'une page d'accueil qui redirige vers une page dédiée à la prédiction via la caméra. Pour cela, deux fragments ont été implémentés et utilisés pour faciliter la navigation. Des classes spécifiques ont été développées pour gérer ces fragments et assurer une expérience utilisateur fluide.
+
+## Navigation
+### Au niveau du Layout
+1. **`app/src/main/res/layout/fragment_welcome.xml`** 
+    Ce fragment configure la page d'accueil de l'application. Elle contient un logo, un message de bienvenue et un bouton "Start" permettant à l'utilisateur de démarrer le processus de reconnaissance des chiffres manuscrits.
+2. **`app/src/main/res/layout/fragment_camera.xml`**
+    Dans cette partie, la bibliothèque `CameraX` a été installée pour gérer le flux vidéo en direct. Un `TextView` a également été ajouté afin d'afficher la valeur prédite par le modèle SVM.
+### Au niveau de l'actvité
+1. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Welcomefragment.kt`** : 
+    Cette classe gère la navigation vers le fragment de la caméra lorsque l'utilisateur appuie sur le bouton **Start**.
+2. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Camerafragment.kt`** :
+    Cette classe charge le fichier `fragment_camera.xml` à l'aide de `ViewBinding`. Elle contient également la logique nécessaire pour mettre à jour l'interface utilisateur avec les prédictions via la fonction **updateUI**.
+### Au niveau de la navigation   
+Un fichier de navigation `nav_graph.xml` a été créé dans `app/src/main/res/navigation/nav_graph.xml` pour gérer la navigation entre les deux fragments. Ce fichier définit explicitement l'action permettant de passer du fragment d'accueil (`FragmentWelcome`) au fragment de caméra (`CameraFragment`).
+## Résultat attendu 
+L'interface finale comprend :
+- Une zone principale affichant le flux vidéo
+- Une zone encadrée pour les prédictions
+- Une zone encadrée pour afficher les étapes de traitement
+
+Cette structure offre une interface claire, simple et professionnelle pour l'utilisateur.
+
+---
+## **Détails des Fichiers Clés et de Leur Fonctionnalité**
+
+Cette section documente ma contribution au projet, qui inclut l'intégration du fragment de la caméra (`CameraFragment`), le traitement d'image, et l'intégration avec le modèle SVM pour la prédiction des chiffres manuscrits.
+
+---
 ## Image processing
 Le fichier `Image_Processing.kt` contient une série de fonctions en Kotlin permettant de réaliser différentes opérations de traitement d'images, telles que le filtrage, la détection de contours, le redimensionnement et la binarisation. Ces opérations sont essentielles pour préparer les images récupérées par CameraX de l'application mobile. Une fois préparées, ces images sont transformées en vecteurs pour être transmises au modèle d'apprentissage automatique afin d'effectuer des prédictions.
 
@@ -389,40 +423,6 @@ Elle contient la liste des 10 modèles SVM des 10 classes.
    - Prédit la classe d'un vecteur d'entrée en calculant les scores pour les 10 classes et retourne la classe avec le score maximal.
 
 ---
-# Interface Utilisateur
-L'interface utilisateur a pour objectif de fournir un environnement intuitif et interactif permettant de :  
-- Afficher le flux vidéo de la caméra en direct
-- Visualiser les prédictions du chiffre manuscrit détecté
-- Monter les étapes de traitement de l'image en temps réel
-
-L'interface est structurée autour d'une page d'accueil qui redirige vers une page dédiée à la prédiction via la caméra. Pour cela, deux fragments ont été implémentés et utilisés pour faciliter la navigation. Des classes spécifiques ont été développées pour gérer ces fragments et assurer une expérience utilisateur fluide.
-
-## Navigation
-### Au niveau du Layout
-1. **`app/src/main/res/layout/fragment_welcome.xml`** 
-    Ce fragment configure la page d'accueil de l'application. Elle contient un logo, un message de bienvenue et un bouton "Start" permettant à l'utilisateur de démarrer le processus de reconnaissance des chiffres manuscrits.
-2. **`app/src/main/res/layout/fragment_camera.xml`**
-    Dans cette partie, la bibliothèque `CameraX` a été installée pour gérer le flux vidéo en direct. Un `TextView` a également été ajouté afin d'afficher la valeur prédite par le modèle SVM.
-### Au niveau de l'actvité
-1. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Welcomefragment.kt`** : 
-    Cette classe gère la navigation vers le fragment de la caméra lorsque l'utilisateur appuie sur le bouton **Start**.
-2. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Camerafragment.kt`** :
-    Cette classe charge le fichier `fragment_camera.xml` à l'aide de `ViewBinding`. Elle contient également la logique nécessaire pour mettre à jour l'interface utilisateur avec les prédictions via la fonction **updateUI**.
-### Au niveau de la navigation   
-Un fichier de navigation `nav_graph.xml` a été créé dans `app/src/main/res/navigation/nav_graph.xml` pour gérer la navigation entre les deux fragments. Ce fichier définit explicitement l'action permettant de passer du fragment d'accueil (`FragmentWelcome`) au fragment de caméra (`CameraFragment`).
-## Résultat attendu 
-L'interface finale comprend :
-- Une zone principale affichant le flux vidéo
-- Une zone encadrée pour les prédictions
-- Une zone encadrée pour afficher les étapes de traitement
-
-Cette structure offre une interface claire, simple et professionnelle pour l'utilisateur.
----
-## **Détails des Fichiers Clés et de Leur Fonctionnalité**
-
-Cette section documente ma contribution au projet, qui inclut l'intégration du fragment de la caméra (`CameraFragment`), le traitement d'image, et l'intégration avec le modèle SVM pour la prédiction des chiffres manuscrits.
-
----
 
 ## **Fichiers Clés et Leur Fonctionnalité**
 
@@ -575,8 +575,6 @@ clustering comme k-means pour initialiser les vecteurs supports.
 - Améliorer le traitement d'image pour garantir que les chiffres soient bien récupérés dans leur intégralité et restent connectés, évitant ainsi des erreurs où des chiffres mal segmentés seraient mal interprétés.
 
 ---
-
-
 ## Gestion de Projet et Outils Utilisés
 ### Méthodologie Agile
 Le projet a suivi la méthode Agile, avec des sprints et des réunions quotidiennes pour ajuster les priorités et assurer une collaboration continue.
