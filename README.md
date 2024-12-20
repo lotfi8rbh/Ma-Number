@@ -363,7 +363,7 @@ L'interface finale comprend :
 
 Cette structure offre une interface claire, simple et professionnelle pour l'utilisateur.
 ---
-## **Introduction**
+## **section section section**
 
 Cette section documente ma contribution au projet, qui inclut l'intégration du fragment de la caméra (CameraFragment), le traitement d'image, et l'intégration avec le modèle SVM pour la prédiction des chiffres manuscrits.
 
