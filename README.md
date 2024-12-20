@@ -185,7 +185,8 @@ Résolution des problèmes éventuels :
 ## Image processing
 Le fichier `Image_Processing.kt` contient une série de fonctions en Kotlin permettant de réaliser différentes opérations de traitement d'images, telles que le filtrage, la détection de contours, le redimensionnement et la binarisation. Ces opérations sont essentielles pour préparer les images récupérées par CameraX de l'application mobile. Une fois préparées, ces images sont transformées en vecteurs pour être transmises au modèle d'apprentissage automatique afin d'effectuer des prédictions.
 
-`loadImage(imagePath: String): BufferedImage`
+---
+**`loadImage(imagePath: String): BufferedImage`**
 
 **Description :** Charge une image depuis le chemin spécifié.
 
@@ -194,7 +195,7 @@ Le fichier `Image_Processing.kt` contient une série de fonctions en Kotlin perm
 val image = loadImage("res/images/test0.jpeg")
 ```
 ---
-`applyGaussianBlur(image: BufferedImage): BufferedImage`
+**`applyGaussianBlur(image: BufferedImage): BufferedImage`**
 
 **Description :** Applique un filtre gaussien pour réduire le bruit de l'image.
 
@@ -205,7 +206,7 @@ val image = loadImage("res/images/test0.jpeg")
 val blurredImage = applyGaussianBlur(image)
 ```
 ---
-`applySobelEdgeDetection(image: BufferedImage): BufferedImage`
+**`applySobelEdgeDetection(image: BufferedImage): BufferedImage`**
 
 **Description :** Applique le filtre Sobel pour détecter les contours horizontaux et verticaux.
 
@@ -216,7 +217,7 @@ val blurredImage = applyGaussianBlur(image)
 val edgeDetectedImage = applySobelEdgeDetection(image)
 ```
 ---
-`resizeImage(image: BufferedImage, width: Int, height: Int): BufferedImage`
+**`resizeImage(image: BufferedImage, width: Int, height: Int): BufferedImage`**
 
 **Description :** Redimensionne l'image aux dimensions spécifiées.
 
@@ -225,7 +226,7 @@ val edgeDetectedImage = applySobelEdgeDetection(image)
 val resizedImage = resizeImage(image, 28, 28)
 ```
 ---
-`otsuThreshold(image: BufferedImage): Int`
+**`otsuThreshold(image: BufferedImage): Int`**
 
 **Description :** Calcule le seuil optimal de binarisation en utilisant la méthode d'Otsu.
 
@@ -234,7 +235,7 @@ val resizedImage = resizeImage(image, 28, 28)
 val threshold = otsuThreshold(image)
 ```
 ---
-`binarizeImage(image: BufferedImage, threshold: Int): Array<IntArray>`
+**`binarizeImage(image: BufferedImage, threshold: Int): Array<IntArray>`**
 
 **Description :** Binarise l'image en utilisant le seuil spécifié.
 
@@ -242,8 +243,8 @@ val threshold = otsuThreshold(image)
 ```kotlin
 val binarizedPixels = binarizeImage(image, threshold)
 ```
-
-`flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray`   
+---
+**`flattenBinarizedImage(binarizedPixels: Array<IntArray>): IntArray`**   
 **Description :** Aplatie l'image binarisée en un vecteur unidimensionnel.  
 **Utilisation :**
 ```kotlin
@@ -251,32 +252,37 @@ val flattenedVector = flattenBinarizedImage(binarizedPixels)
 ```
 ---
 
-Le fichier `Centralisation.kt` : est une version améliorée de `Image_Processing.kt`.
+Le fichier **`Centralisation.kt`** : est une version améliorée de **`Image_Processing.kt`**.
 
 Dans cette version, nous avons abandonné l'utilisation du filtre gaussien. À la place, l'accent est mis sur la détection du chiffre présent dans l'image. Une fois le chiffre détecté, l'image est rognée pour ne conserver que la zone pertinente, puis elle est transformée en vecteur afin d'être préparée pour le modèle d'apprentissage automatique.
 
 ---
 
-`cropImage(pixels: Array<IntArray>): Array<IntArray>`
+**`cropImage(pixels: Array<IntArray>): Array<IntArray>`**
 
 **Description :**  Cette fonction rogne l'image binarisée en éliminant les lignes et colonnes contenant uniquement des 0 (celles qui sont vides). Elle ajoute également une bordure de 64 pixels (de 0) tout autour de l'image, permettant ainsi de se concentrer uniquement sur la zone contenant le chiffre à traiter, en éliminant les parties non pertinentes.   
 **Utilisation**  
 ```kotlin
 val croppedPixels = cropImage(binarizedPixels)
 ```
-
-`resizeAndFlattenImage(image: BufferedImage, width: Int, height: Int): List<Int>`  
+---
+**`resizeAndFlattenImage(image: BufferedImage, width: Int, height: Int): List<Int>`** 
 **Description** Redimensionne l'image aux dimensions spécifiées et la transforme en un vecteur unidimensionnel.  
 **Utilisation**  
 ```kotlin
 val resizedVector = resizeAndFlattenImage(image, 28, 28)
 ```
+---
+## Entrainement du model SVM en Python
 
-## GADEU MONTHE VINETTE MARCY
-# Implémentation du SVM avec le noyau RBF en Java
-Après avoir programmé notre SVM en Python à l'aide de scikit-learn , nous avons récupéré les vecteurs de support, les coefficients et les biais de chaque classe soit 10 classes (de 0 à 9).
 
-Nous avons implémenté la fonction de décision SVM suivante :
+
+
+---
+## Implémentation du SVM avec le noyau RBF en Java
+Après programmation du SVM en Python avec `scikit-learn`, les vecteurs de support, les coefficients, et les biais associés à chaque classe (les 10 classes, de 0 à 9) ont été extraits.
+
+La fonction de décision SVM suivante a ensuite été implémentée en Java :
 $$
 f(x) = \text{sign} \left( \sum_{i=1}^n \alpha_i y_i K(x_i, x) + b \right)
 $$
@@ -288,15 +294,16 @@ Où :
 - \( b \) : le biais appris.
 - \( \gamma \) : le paramètre du noyau.
 
-Le noyau utilisé dans cet algorithme est le noyau gaussien (RBF), défini par :
+Le noyau utilisé dans cet algorithme est le `noyau gaussien (RBF)`, défini par :
 $$ K(x_i, x) = \exp \left( -\gamma \|x_i - x\|^2 \right)
 $$
 
 
-Nous prédisons les scores d'appartenance de notre iamge à chaque classe et la classe avec le score maximale est la classe prédite. 
+Les scores d'appartenance de l'image à chaque classe sont prédits, et la classe ayant le score le plus élevé est sélectionnée comme classe finale prédite.
 
-Pour ce faire, nous avons organisé notre code comme suite:
+Pour réaliser cette prédiction, le code a été structuré de la manière suivante :
 
+---
 ### 1. **Classe `ModeleSVM`**
 
 cette classe représente le modèle SVM avec un noyau RBF. 
@@ -321,6 +328,7 @@ cette classe représente le modèle SVM avec un noyau RBF.
 6. **`predict_score(double[] vecteur_image)`**
    - Calcule le score pour une classe donnée en fonction du vecteur image.
 
+---
 ### 2. **Classe `ListModeleSVM`**
 Elle contient la liste des 10 modèles SVM des 10 classes.
 
@@ -334,32 +342,32 @@ Elle contient la liste des 10 modèles SVM des 10 classes.
    - Prédit la classe d'un vecteur d'entrée en calculant les scores pour les 10 classes et retourne la classe avec le score maximal.
 
 ---
-## Harouna NIANG
-La partie interface utilisateur a pour but de fournir un environnement intuitif et interactf pour : 
-    - Afficher le flux vidéo de la caméra en direct
-    - Visualiser les prédictions du chiffre manuscrit détecté
-    - Monter les étapes de traitement de l'image en temps réel
-# Mise en oeuvre de l'interface Utilisateur
-Pour le choix de notre interface utilisateur, nous avons opté une configuration avec une page d'acceuil qui nous redirige vers la page où l'on effectue la prédiction à travers la caméra. Pour cela, nous avons implémenter deux fragments que nous avons utiliser pour la navigation. Et cela implique des classes pour gérer les fragments.
+# Interface Utilisateur
+L'interface utilisateur a pour objectif de fournir un environnement intuitif et interactif permettant de :  
+- Afficher le flux vidéo de la caméra en direct
+- Visualiser les prédictions du chiffre manuscrit détecté
+- Monter les étapes de traitement de l'image en temps réel
+
+L'interface est structurée autour d'une page d'accueil qui redirige vers une page dédiée à la prédiction via la caméra. Pour cela, deux fragments ont été implémentés et utilisés pour faciliter la navigation. Des classes spécifiques ont été développées pour gérer ces fragments et assurer une expérience utilisateur fluide.
 
 ## Navigation
-#### Au niveau du Layout
+### Au niveau du Layout
 1. **`app/src/main/res/layout/fragment_welcome.xml`** 
-    Dans ce fragment permet de configurer la page d'acceuil de notre application dans laquelle nous avons un logo, un message de bienvenue et un bouton Start qui permet à l'utilisateur de lancer la reconnaissance d'un chiffre manuscrit.
+    Ce fragment configure la page d'accueil de l'application. Elle contient un logo, un message de bienvenue et un bouton "Start" permettant à l'utilisateur de démarrer le processus de reconnaissance des chiffres manuscrits.
 2. **`app/src/main/res/layout/fragment_camera.xml`**
-    Dans cette partie, nous avons installer la cameraX ainsi que textView qui permet d'afficher la valeur prédite par notre modèle SVM. 
-#### Au niveau de l'actvité
+    Dans cette partie, la bibliothèque `CameraX` a été installée pour gérer le flux vidéo en direct. Un `TextView` a également été ajouté afin d'afficher la valeur prédite par le modèle SVM.
+### Au niveau de l'actvité
 1. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Welcomefragment.kt`** : 
-    Dans cette classe, nous avons traité la navigation vers le fragment de la camera lors de l'appui sur le bouton Start.
+    Cette classe gère la navigation vers le fragment de la caméra lorsque l'utilisateur appuie sur le bouton **Start**.
 2. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Camerafragment.kt`** :
-    Cette classe permet de charger le fichier fragment_camera.xml via viewBinding. Elle contient également la logique pour mettre à jour les prédictions grâce à la fonction updateUI.
-#### Au niveau de la navigation 
-    On a crée un fichier nav_graph.xml `app/src/main/res/navigation/nav_graph.xml` permettant de gérer la navigation entre nos deux fragments. C'est dans ce dit fichier qu'on explicite l'action de chagement de fragment en l'occurrence de fragmentwelcome à camerafragment.
+    Cette classe charge le fichier `fragment_camera.xml` à l'aide de `ViewBinding`. Elle contient également la logique nécessaire pour mettre à jour l'interface utilisateur avec les prédictions via la fonction **updateUI**.
+### Au niveau de la navigation   
+Un fichier de navigation `nav_graph.xml` a été créé dans `app/src/main/res/navigation/nav_graph.xml` pour gérer la navigation entre les deux fragments. Ce fichier définit explicitement l'action permettant de passer du fragment d'accueil (`FragmentWelcome`) au fragment de caméra (`CameraFragment`).
 ## Résultat attendu 
 L'interface finale comprend :
-    - Une zone principale affichant le flux vidéo
-    - Une zone encadrée pour les prédictions
-    - Une zone encadrée pour afficher les étapes de traitement
+- Une zone principale affichant le flux vidéo
+- Une zone encadrée pour les prédictions
+- Une zone encadrée pour afficher les étapes de traitement
 
 Cette structure offre une interface claire, simple et professionnelle pour l'utilisateur.
 ---
@@ -371,7 +379,7 @@ Cette section documente ma contribution au projet, qui inclut l'intégration du 
 
 ## **Fichiers Clés et Leur Fonctionnalité**
 
-### 1. `CameraFragment`
+### 1. **`CameraFragment`**
 
 **Emplacement** : `fr/mastersd/sime/rabah/manumber/CameraFragment.kt`
 
