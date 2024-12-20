@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Ma Number</string>
+    <string name="image_binarisé">l\'image binaire</string>
+    <string name="logo_description">Appareil noir avec BG vert</string>
+    <string name="demarrer">Démarrer</string>
+    <string name="capture">CAPTURE !</string>
+    <string name="prediction">"Le chiffre manuscrit est  : "</string>
 </resources>
