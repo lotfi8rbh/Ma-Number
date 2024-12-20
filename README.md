@@ -571,6 +571,7 @@ fun startCamera(surfaceProvider: Preview.SurfaceProvider) {
 - **Validation des prédictions** : Ajouter un mécanisme pour détecter et signaler les erreurs de prédiction.
 - Améliorer la convergence des modèles en utilisant des techniques d'initialisation en utilisant des méthodes de 
 clustering comme k-means pour initialiser les vecteurs supports.
+- Afficher les étapes de prétraitement avec un RecyclerView
 - Appliquer une méthode de réduction de dimensionnalité comme PCA avant l'entraînement pour réduire la complexité.
 - Améliorer le traitement d'image pour garantir que les chiffres soient bien récupérés dans leur intégralité et restent connectés, évitant ainsi des erreurs où des chiffres mal segmentés seraient mal interprétés.
 
