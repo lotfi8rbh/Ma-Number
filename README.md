@@ -181,7 +181,41 @@ Résolution des problèmes éventuels :
   Traitez les images capturées en temps réel et affichez les résultats.
 
 ---
+# Interface Utilisateur
+L'interface utilisateur a pour objectif de fournir un environnement intuitif et interactif permettant de :  
+- Afficher le flux vidéo de la caméra en direct
+- Visualiser les prédictions du chiffre manuscrit détecté
+- Monter les étapes de traitement de l'image en temps réel
 
+L'interface est structurée autour d'une page d'accueil qui redirige vers une page dédiée à la prédiction via la caméra. Pour cela, deux fragments ont été implémentés et utilisés pour faciliter la navigation. Des classes spécifiques ont été développées pour gérer ces fragments et assurer une expérience utilisateur fluide.
+
+## Navigation
+### Au niveau du Layout
+1. **`app/src/main/res/layout/fragment_welcome.xml`** 
+    Ce fragment configure la page d'accueil de l'application. Elle contient un logo, un message de bienvenue et un bouton "Start" permettant à l'utilisateur de démarrer le processus de reconnaissance des chiffres manuscrits.
+2. **`app/src/main/res/layout/fragment_camera.xml`**
+    Dans cette partie, la bibliothèque `CameraX` a été installée pour gérer le flux vidéo en direct. Un `TextView` a également été ajouté afin d'afficher la valeur prédite par le modèle SVM.
+### Au niveau de l'actvité
+1. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Welcomefragment.kt`** : 
+    Cette classe gère la navigation vers le fragment de la caméra lorsque l'utilisateur appuie sur le bouton **Start**.
+2. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Camerafragment.kt`** :
+    Cette classe charge le fichier `fragment_camera.xml` à l'aide de `ViewBinding`. Elle contient également la logique nécessaire pour mettre à jour l'interface utilisateur avec les prédictions via la fonction **updateUI**.
+### Au niveau de la navigation   
+Un fichier de navigation `nav_graph.xml` a été créé dans `app/src/main/res/navigation/nav_graph.xml` pour gérer la navigation entre les deux fragments. Ce fichier définit explicitement l'action permettant de passer du fragment d'accueil (`FragmentWelcome`) au fragment de caméra (`CameraFragment`).
+## Résultat attendu 
+L'interface finale comprend :
+- Une zone principale affichant le flux vidéo
+- Une zone encadrée pour les prédictions
+- Une zone encadrée pour afficher les étapes de traitement
+
+Cette structure offre une interface claire, simple et professionnelle pour l'utilisateur.
+
+---
+## **Détails des Fichiers Clés et de Leur Fonctionnalité**
+
+Cette section documente ma contribution au projet, qui inclut l'intégration du fragment de la caméra (`CameraFragment`), le traitement d'image, et l'intégration avec le modèle SVM pour la prédiction des chiffres manuscrits.
+
+---
 ## Image processing
 Le fichier `Image_Processing.kt` contient une série de fonctions en Kotlin permettant de réaliser différentes opérations de traitement d'images, telles que le filtrage, la détection de contours, le redimensionnement et la binarisation. Ces opérations sont essentielles pour préparer les images récupérées par CameraX de l'application mobile. Une fois préparées, ces images sont transformées en vecteurs pour être transmises au modèle d'apprentissage automatique afin d'effectuer des prédictions.
 
@@ -274,8 +308,55 @@ val resizedVector = resizeAndFlattenImage(image, 28, 28)
 ```
 ---
 ## Entrainement du model SVM en Python
+### 1. Entraînement et optimisation du modèle SVM
+L'entraînement du modèle SVM a été réalisé en Python à l'aide de la bibliothèque `scikit-learn`. Voici les principales étapes du pipeline d'entraînement :
+- L’importation des bibliothèques (numpy, sklearn, seaborn)
+- Le téléchargement des données d’entrainement (mnist_784).
+- Prétraitement des données : binarisation des images, réduction des données 700 observations par classe.
+- Séparation des données d’entrainement et de test.
 
+1. Entrainement des 10 modèles One-vs-All SVM avec les paramètres suivants :
+- Noyau : rbf
+- C = 10
+- Gamma = 0.001
+**Décision finale** : La décision est prise en utilisant la fonction `decision_function()` qui pour chaque valeur calcul le distance de chaque échantillon par rapport aux hyperplan SVM.
+Les distances sont utilisées comme une mesure de confiance plus la valeur est grande plus le chiffre appartient à cette classe.
 
+```Python
+def predict_ova(models, X):
+    decision_values = np.array([model.decision_function(X) for model in models])
+    return np.argmax(decision_values, axis=0)
+```
+2. Calcul de précision en utilisant `accuracy_score`, `confusion_matrix` et optimisation en utilisant `GridSearchCV` pour trouver les meilleurs paramètres, les paramètres testés sont :
+- C = [0.1, 1, 10]
+- Gamma = [0.01, 0.001, 0.0001]
+Le code pour l'entraînement se trouve dans le fichier `Model_SVM.ipynb`.
+
+**Modèle entraîné**
+Le modèle est basé sur la méthode **One-vs-All**. Pour chaque classe, un modèle SVM est entraîné pour différencier cette classe des autres. Au total, 10 modèles (un pour chaque chiffre) ont été entraînés.
+
+---
+### 2. Extraction des paramètres du modèle
+Après l'entraînement, les paramètres nécessaires ont été extraits pour être utilisés dans Java:
+- **Vecteurs supports** : Les vecteurs utilisés par le SVM pour définir l'hyperplan.
+- **Coefficients** : Les poids associés aux vecteurs supports.
+- **Biais** : La constante ajoutée à la fonction de décision. 
+
+Ces paramètres ont été exportés dans des fichiers distincts au format texte pour chaque modèle SVM :
+- **`support_vectors_class_<i>.txt`**: Contient les vecteurs supports pour
+la classe i.
+- **`coefficients_class_<i>.txt`** : Contient les coefficients associés.
+- **`bias_class_<i>.txt`** : Contient le biais du modèle
+
+Les fichiers générés sont stockés dans le dossier `dev_ml/modèle SVM/data` pour recréer le modèle SVM en kottlin.Le chemin du fichier qui permet la lecture de ces fichiers `/dev_ml /modèleSVM/ListModeleSVM.kt` .
+
+## Instructions pour l'utilisation
+1. **Entraînez le modèle en Python** : Utilisez le notebook fourni (`Model_SVM.ipynb`)
+2. **Générez les fichiers nécessaires** : Les paramètres sont automatiquement exportés lors de l'exécution.
+3. **Utilisez les fichiers en Java** :
+- Implémentez la classe SVMModel en Java (exemple fourni).
+- Fournissez les fichiers .txt comme entrée pour reconstruire le modèle.
+- oUtilisez la fonction  predict_ova pour tester et effectuer des prédictions
 
 
 ---
@@ -342,51 +423,14 @@ Elle contient la liste des 10 modèles SVM des 10 classes.
    - Prédit la classe d'un vecteur d'entrée en calculant les scores pour les 10 classes et retourne la classe avec le score maximal.
 
 ---
-# Interface Utilisateur
-L'interface utilisateur a pour objectif de fournir un environnement intuitif et interactif permettant de :  
-- Afficher le flux vidéo de la caméra en direct
-- Visualiser les prédictions du chiffre manuscrit détecté
-- Monter les étapes de traitement de l'image en temps réel
-
-L'interface est structurée autour d'une page d'accueil qui redirige vers une page dédiée à la prédiction via la caméra. Pour cela, deux fragments ont été implémentés et utilisés pour faciliter la navigation. Des classes spécifiques ont été développées pour gérer ces fragments et assurer une expérience utilisateur fluide.
-
-## Navigation
-### Au niveau du Layout
-1. **`app/src/main/res/layout/fragment_welcome.xml`** 
-    Ce fragment configure la page d'accueil de l'application. Elle contient un logo, un message de bienvenue et un bouton "Start" permettant à l'utilisateur de démarrer le processus de reconnaissance des chiffres manuscrits.
-2. **`app/src/main/res/layout/fragment_camera.xml`**
-    Dans cette partie, la bibliothèque `CameraX` a été installée pour gérer le flux vidéo en direct. Un `TextView` a également été ajouté afin d'afficher la valeur prédite par le modèle SVM.
-### Au niveau de l'actvité
-1. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Welcomefragment.kt`** : 
-    Cette classe gère la navigation vers le fragment de la caméra lorsque l'utilisateur appuie sur le bouton **Start**.
-2. **Classe `app/src/main/java/fr/mastersd/sime/rabah/manumber/Camerafragment.kt`** :
-    Cette classe charge le fichier `fragment_camera.xml` à l'aide de `ViewBinding`. Elle contient également la logique nécessaire pour mettre à jour l'interface utilisateur avec les prédictions via la fonction **updateUI**.
-### Au niveau de la navigation   
-Un fichier de navigation `nav_graph.xml` a été créé dans `app/src/main/res/navigation/nav_graph.xml` pour gérer la navigation entre les deux fragments. Ce fichier définit explicitement l'action permettant de passer du fragment d'accueil (`FragmentWelcome`) au fragment de caméra (`CameraFragment`).
-## Résultat attendu 
-L'interface finale comprend :
-- Une zone principale affichant le flux vidéo
-- Une zone encadrée pour les prédictions
-- Une zone encadrée pour afficher les étapes de traitement
-
-Cette structure offre une interface claire, simple et professionnelle pour l'utilisateur.
----
-## **section section section**
-
-Cette section documente ma contribution au projet, qui inclut l'intégration du fragment de la caméra (CameraFragment), le traitement d'image, et l'intégration avec le modèle SVM pour la prédiction des chiffres manuscrits.
-
----
 
 ## **Fichiers Clés et Leur Fonctionnalité**
 
 ### 1. **`CameraFragment`**
-
 **Emplacement** : `fr/mastersd/sime/rabah/manumber/CameraFragment.kt`
-
 **Description** : Ce fichier implémente le fragment principal pour capturer une image via CameraX, appliquer un traitement d'image, et utiliser le modèle SVM pour prédire le chiffre manuscrit.
 
 #### Fonctionnalités Principales :
-
 - **Initialisation de la caméra** : Utilise la classe `CameraManager` pour démarrer la caméra et capturer une image.
 - **Traitement d'image** : Charge l'image capturée, la redimensionne, et applique une binarisation.
 - **Prédiction SVM** : Convertit les pixels binarisés en vecteur aplati pour les passer au modèle SVM.
@@ -460,7 +504,6 @@ fun processImageToFlattenedVector(image: Bitmap): IntArray {
 ### 3. `CameraManager`
 
 **Emplacement** : `fr/mastersd/sime/rabah/manumber/utils/CameraManager.kt`
-
 **Description** : Cette classe encapsule la logique de gestion de la caméra, y compris le démarrage de la caméra et la capture des images.
 
 #### Fonctionnalités Clés :
@@ -508,16 +551,13 @@ fun startCamera(surfaceProvider: Preview.SurfaceProvider) {
 ## **Processus de Fonctionnement**
 
 1. **Capture d'Image** :
-
    - L'utilisateur clique sur le bouton de capture dans l'interface utilisateur.
    - `CameraManager` enregistre l'image capturée dans un fichier temporaire.
 
 2. **Traitement** :
-
    - `ImageUtils` effectue les étapes de traitement (rotation, redimension, binarisation).
 
 3. **Prédiction** :
-
    - Le vecteur aplati est envoyé au modèle SVM via `ListModeleSVM` pour prédire le chiffre.
 
 4. **Affichage** :
@@ -529,10 +569,21 @@ fun startCamera(surfaceProvider: Preview.SurfaceProvider) {
 
 - **Optimisation des performances** : Réduire le temps de traitement des images.
 - **Validation des prédictions** : Ajouter un mécanisme pour détecter et signaler les erreurs de prédiction.
+- Améliorer la convergence des modèles en utilisant des techniques d'initialisation en utilisant des méthodes de 
+clustering comme k-means pour initialiser les vecteurs supports.
+- Afficher les étapes de prétraitement avec un RecyclerView
+- Appliquer une méthode de réduction de dimensionnalité comme PCA avant l'entraînement pour réduire la complexité.
+- Améliorer le traitement d'image pour garantir que les chiffres soient bien récupérés dans leur intégralité et restent connectés, évitant ainsi des erreurs où des chiffres mal segmentés seraient mal interprétés.
 
 ---
+## Gestion de Projet et Outils Utilisés
+### Méthodologie Agile
+Le projet a suivi la méthode Agile, avec des sprints et des réunions quotidiennes pour ajuster les priorités et assurer une collaboration continue.
 
-Après avoir écrit le modèle en Java, nous l'avons traduit en Kotlin pour pouvoir l'intégrer facilement dans l'application.
+### Outils de Collaboration
+- **GitLab** : Gestion de version du code, avec branches et demandes de fusion pour un travail collaboratif fluide.
+- **Trello** : Suivi des tâches et de l’avancement du projet, avec des cartes pour chaque fonctionnalité et des priorités claires.
+- **Slack** : Communication en temps réel, avec des canaux dédiés aux discussions techniques et à l'intégration de notifications GitLab et Trello.
 
 ## Références
 
