@@ -535,6 +535,14 @@ Après avoir écrit le modèle en Java, nous l'avons traduit en Kotlin pour pouv
 
 ## Auteur
 
-Lotfi Abdelkadir RABAH
+**Rania BOUZROUD**
 
-Projet réalisé dans le cadre de MaNumber.
+**Harouna NIANG**
+
+**Nariman LALOUCHE**
+
+**Vinette Marcy GADEU MONTHE**
+
+**Lotfi Abdelkadir RABAH**
+
+Projet réalisé dans le cadre de **Manumber**.
