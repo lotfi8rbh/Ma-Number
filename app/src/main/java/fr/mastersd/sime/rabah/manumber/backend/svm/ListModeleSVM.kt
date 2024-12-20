@@ -1,4 +1,4 @@
-package backend.svm
+package fr.mastersd.sime.rabah.manumber.backend.svm
 
 import android.content.Context
 

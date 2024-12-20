@@ -1,9 +1,6 @@
-package backend.svm
+package fr.mastersd.sime.rabah.manumber.backend.svm
 
 import android.content.Context
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 
 class ModeleSVM(
     context: Context,
