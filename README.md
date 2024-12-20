@@ -576,7 +576,6 @@ clustering comme k-means pour initialiser les vecteurs supports.
 
 ---
 
-Après avoir écrit le modèle en Java, nous l'avons traduit en Kotlin pour pouvoir l'intégrer facilement dans l'application.
 
 ## Gestion de Projet et Outils Utilisés
 ### Méthodologie Agile
