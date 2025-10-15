@@ -114,7 +114,7 @@ The classification model is a **One-vs-All Support Vector Machine (O-v-A SVM)** 
 
 1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/lotfi8rbh/MediCall.git](https://github.com/lotfi8rbh/MediCall.git)
+    git clone https://github.com/lotfi8rbh/Ma-Number
     cd MediCall
     ```
 2.  **Train and Export Model Parameters (Python)**
@@ -154,3 +154,4 @@ This project was developed by the following team members as part of the **Manumb
 * **Nariman LALOUCHE**
 * **Vinette Marcy GADEU MONTHE**
 * **Lotfi Abdelkadir RABAH**
+
