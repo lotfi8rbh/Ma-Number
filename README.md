@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-This project, realized as an **Undergraduate Final Year Project (FYP)**, implements a real-time system for **Handwritten Digit Recognition**. The application uses the device's camera to capture a live video stream, processes the captured image, and utilizes a **Support Vector Machine (SVM)** model, re-implemented in Kotlin, to predict the recognized digit.
+This project, realized as an **Undergraduate First Year Project (FYP)**, implements a real-time system for **Handwritten Digit Recognition**. The application uses the device's camera to capture a live video stream, processes the captured image, and utilizes a **Support Vector Machine (SVM)** model, re-implemented in Kotlin, to predict the recognized digit.
 
 ### 1.1 Key Technical Goals
 
@@ -154,4 +154,5 @@ This project was developed by the following team members as part of the **Manumb
 * **Nariman LALOUCHE**
 * **Vinette Marcy GADEU MONTHE**
 * **Lotfi Abdelkadir RABAH**
+
 
